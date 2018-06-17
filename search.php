@@ -1,15 +1,52 @@
 <!-- db connection -->
-<?php include 'includes/db.php' ?>
+<?php include 'includes/db.php';
 
-<!-- header included -->
-<?php include_once 'includes/header.php'?>
+#<!-- header included -->
+ include_once 'includes/header.php';
 
-<!-- navbar included -->
-<?php include_once 'includes/navbar.php' ?>
+#<!-- navbar included -->
+include_once 'includes/navbar.php';
 
 
-   
 
+?>
+
+                   <!-- Page Content -->
+                    <div class="container">
+
+                        <div class="row">
+
+                            <?php
+
+                                if (isset($_POST['submit'])) {
+                                    $search = $_POST['search'];
+
+                                    $SearchQuery = "SELECT * FROM posts WHERE post_tags LIKE '%$search%' ";
+                                    $searchResult = mysqli_query($conn, $SearchQuery);
+                                    $count = mysqli_num_rows($searchResult);
+
+                                    if (!$count) {
+                                        ?>
+
+                            <!-- Blog Entries Column -->
+                            <div class="col-md-8">
+                                <h1 class="page-header">
+                                    NO RESULTS!
+                                </h1>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+            <?php
+        } else {
+
+
+            ?>
+
+
+                
     <!-- Page Content -->
     <div class="container">
 
@@ -17,18 +54,15 @@
 
             <!-- Blog Entries Column -->
             <div class="col-md-8">
-
                 <h1 class="page-header">
                     Page Heading
                     <small>Secondary Text</small>
                 </h1>
 
-                <?php 
 
-                    $query = "SELECT * FROM posts";
-                    $result = mysqli_query($conn, $query);
+                <?php
 
-                    while ($row = mysqli_fetch_assoc($result)) {
+                    while ($row = mysqli_fetch_assoc($searchResult)) {
                         $post_title = $row['post_title'];
                         $post_author = $row['post_author'];
                         $post_date = $row['post_date'];
@@ -38,7 +72,7 @@
                         ?>
 
 
-
+             
                 <!-- First Blog Post -->
                 <h2>
                     <a href="#"><?php echo $post_title; ?></a>
@@ -56,7 +90,8 @@
                 
 
                 <hr>
-                    <?php }   ?>
+                    <?php }  }   }  ?>
+
 
                 <!-- Pager -->
                 <ul class="pager">
@@ -76,6 +111,11 @@
         <!-- /.row -->
 
         <hr>
+
+
+
+   
+
 
 
 
